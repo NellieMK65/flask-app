@@ -28,3 +28,34 @@ class Student(db.Model):
     age = db.Column(db.Integer, nullable=False)
     created_at = db.Column(db.TIMESTAMP)
 
+    results = db.relationship('Result')
+
+    def to_dict(self):
+
+        converted_results = []
+
+        for result in self.results:
+            converted_results.append(result.to_dict())
+
+        return {
+            "id": self.id,
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "results": converted_results
+        }
+
+class Result(db.Model):
+    __tablename__ = "results"
+
+    id = db.Column(db.Integer, primary_key=True)
+    marks = db.Column(db.Integer, nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    # course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+
+    student = db.relationship('Student', back_populates="results")
+
+    def to_dict(self):
+        return  {
+            "id": self.id,
+            "marks": self.marks,
+        }

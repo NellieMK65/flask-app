@@ -56,8 +56,12 @@ def delete_course(course_id):
 @app.get('/students')
 def students():
     students = Student.query.all()
-    print(students)
-    return "List of students"
+    results = []
+
+    for student in students:
+        results.append(student.to_dict())
+
+    return results
 
 @app.post('/students')
 def create_user():
