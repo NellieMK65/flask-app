@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, make_response
 from flask_migrate import Migrate
 
-from models import db, Student
+from models import db, Student, Result
 
 app = Flask(__name__)
 
@@ -60,6 +60,24 @@ def students():
 
     for student in students:
         results.append(student.to_dict())
+
+    return results
+
+@app.get('/students/<int:student_id>')
+def student(student_id):
+    student = Student.query.filter_by(id = student_id).first()
+
+    if student == None:
+        return make_response({ "message": "Student not found" }, 404)
+
+    return student.to_dict()
+
+@app.get('/results')
+def results():
+    results = []
+
+    for result in Result.query.all():
+        results.append(result.to_dict())
 
     return results
 

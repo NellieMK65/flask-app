@@ -1,5 +1,6 @@
 from sqlalchemy import MetaData
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_serializer import SerializerMixin
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -15,7 +16,7 @@ metadata = MetaData(naming_convention = convention)
 db = SQLAlchemy(metadata = metadata)
 
 # define models
-class Student(db.Model):
+class Student(db.Model, SerializerMixin):
     # define table
     __tablename__ = "students"
 
@@ -29,22 +30,15 @@ class Student(db.Model):
     created_at = db.Column(db.TIMESTAMP)
 
     results = db.relationship('Result')
+    """
+    When implementing a one to one rltship we need to add
+    uselist=False option.
+    """
+    # result = db.relationship('Result', uselist=False)
 
-    def to_dict(self):
+    serialize_rules = ('-results.student',)
 
-        converted_results = []
-
-        for result in self.results:
-            converted_results.append(result.to_dict())
-
-        return {
-            "id": self.id,
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "results": converted_results
-        }
-
-class Result(db.Model):
+class Result(db.Model, SerializerMixin):
     __tablename__ = "results"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -54,8 +48,7 @@ class Result(db.Model):
 
     student = db.relationship('Student', back_populates="results")
 
-    def to_dict(self):
-        return  {
-            "id": self.id,
-            "marks": self.marks,
-        }
+    # prevent student from loading results
+    serialize_rules = ('-student.results',)
+    # select specific fields
+    serialize_only = ('id', 'marks', 'student')
