@@ -77,11 +77,15 @@ class StudentResource(Resource):
         if phone:
             return {"message": "Phone number already taken"}, 422
 
-        student.first_name = data['first_name']
-        student.last_name = data['last_name']
-        student.email = data['email']
-        student.phone = data['phone']
-        student.age = data['age']
+        for key in data.keys():
+            setattr(student, key, data[key])
+
+        # student.first_name = data['first_name']
+        # student.last_name = data['last_name']
+        # student.email = data['email']
+        # student.phone = data['phone']
+        # student.age = data['age']
+        # setattr(student, 'age', data['age'])
 
         db.session.commit()
 
