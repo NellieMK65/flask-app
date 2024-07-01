@@ -22,6 +22,9 @@ class HelloWorld(Resource):
         return { "message": "Hello world" }
 
 api.add_resource(HelloWorld, '/')
+# PATCH -> /students/1
+# DELETE -> /students/1
+# GET one -> /student/1
 api.add_resource(StudentResource, '/students', '/students/<int:id>')
 api.add_resource(CourseResource, '/courses', '/courses/<int:id>')
 api.add_resource(CourseStudentsResource, '/courses/<int:course_id>/students')
