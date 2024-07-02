@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
@@ -9,7 +11,7 @@ from resources.course import CourseResource, CourseStudentsResource
 app = Flask(__name__)
 api = Api(app)
 # configure db connection
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///student.sqlite'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_ECHO'] = True
 
 # setup migration tool

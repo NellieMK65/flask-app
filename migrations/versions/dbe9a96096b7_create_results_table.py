@@ -25,8 +25,8 @@ def upgrade():
     sa.ForeignKeyConstraint(['student_id'], ['students.id'], name=op.f('fk_results_student_id_students')),
     sa.PrimaryKeyConstraint('id', name=op.f('pk_results'))
     )
-    with op.batch_alter_table('students', schema=None) as batch_op:
-        batch_op.create_unique_constraint(batch_op.f('uq_students_email'), ['email'])
+    # with op.batch_alter_table('students', schema=None) as batch_op:
+    #     batch_op.create_unique_constraint(batch_op.f('uq_students_email'), ['email'])
 
     # ### end Alembic commands ###
 
