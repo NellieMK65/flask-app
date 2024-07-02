@@ -3,6 +3,7 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
+from flask_cors import CORS
 
 from models import db
 from resources.student import StudentResource
@@ -13,6 +14,9 @@ api = Api(app)
 # configure db connection
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_ECHO'] = True
+
+# setup cors
+CORS(app)
 
 # setup migration tool
 migrate = Migrate(app, db, render_as_batch=True)
