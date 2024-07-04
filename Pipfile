@@ -13,6 +13,8 @@ flask-restful = "*"
 python-dotenv = "*"
 gunicorn = "*"
 flask-cors = "*"
+flask-jwt-extended = "*"
+flask-bcrypt = "*"
 
 [dev-packages]
 

@@ -95,7 +95,7 @@ class StudentResource(Resource):
         student = Student.query.filter_by(id=id).first()
 
         if student == None:
-            return {"message": "Student not found"}, 404
+            return {"message": "Student not found", "status": "fail"}, 404
 
         db.session.delete(student)
 

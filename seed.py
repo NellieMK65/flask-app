@@ -4,9 +4,11 @@ from models import db, Student, Result, Course
 
 with app.app_context():
     print("Start seeding...")
+    Result.query.delete()
+    Course.query.delete()
+    Student.query.delete()
 
     print("Seeding courses")
-    Course.query.delete()
 
     course = Course(name="Phase 4 Flask", duration="3 weeks", category="Software Engineering", created_at=datetime.now())
 
@@ -15,7 +17,7 @@ with app.app_context():
     print("Finished seeding courses")
 
     print("Seeding student")
-    Student.query.delete()
+
     new_students = []
 
     joseph = Student(first_name="Joseph", last_name="Mburu", email="joseph@gmail.com",phone="0712345677", age=19)
@@ -30,7 +32,6 @@ with app.app_context():
     print("Students seeded")
 
     print("Seeding results")
-    Result.query.delete()
     new_results = []
 
     result = Result(marks=0,student=joseph, course= course)
