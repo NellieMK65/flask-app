@@ -1,5 +1,6 @@
 from flask_restful import Resource, reqparse
 from sqlalchemy import and_, not_
+from flask_jwt_extended import jwt_required, get_jwt
 from models import db, Student
 
 
@@ -16,7 +17,14 @@ class StudentResource(Resource):
                         help="Phone number is required")
     parser.add_argument('age', type=int, required=True, help="Age is required")
 
+    @jwt_required()
     def get(self, id=None):
+
+        jwt = get_jwt()
+
+        if jwt['role'] != 'admin':
+            return { "message": "Unauthorized request" }, 401
+
         if id == None:
             students = Student.query.all()
             results = []
